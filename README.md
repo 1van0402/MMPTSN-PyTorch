@@ -13,15 +13,15 @@ This paper developed the Multi-Modal Phenological Temporal-Spatial Texture Netwo
 </p>
 
 <p align="center">
-  <img src="imgs/result-A.png" width="800"/>
+  <img src="imgs/result-A.jpg" width="800"/>
 </p>
 
 <p align="center">
-  <img src="imgs/result-B.png" width="800"/>
+  <img src="imgs/result-B.jpg" width="800"/>
 </p>
 
 <p align="center">
-  <img src="imgs/result-C.png" width="800"/>
+  <img src="imgs/result-C.jpg" width="800"/>
 </p>
 
 <p align="center">
