@@ -1,34 +1,42 @@
-# BsiNet
+# MMPTSN
 
-Official Pytorch Code base for "Delineation of agricultural fields using multi-task BsiNet from high-resolution satellite images"
+Official Pytorch Code base for "Overcoming Spectral and Tidal Challenges in Mangrove Mapping with a Multi-Modal Deep Learning Network Fusing Phenological and Texture Features"
 
 [Project](https://github.com/long123524/BsiNet-torch)
 
 ## Introduction
 
-This paper presents a new multi-task neural network BsiNet to delineate agricultural fields from remote sensing images. BsiNet learns three tasks, i.e., a core task for agricultural field identification and two auxiliary tasks for field boundary prediction and distance estimation, corresponding to mask, boundary, and distance tasks, respectively. 
+This paper developed the Multi-Modal Phenological Temporal-Spatial Texture Network (MMPTSN), a novel deep learning architecture that systematically integrates spectral, SAR, spatial texture, and phenological features from multi-source time-series data. The proposed framework effectively addresses the long-standing challenges of spectral confusion, tidal interference, and suboptimal feature fusion in mangrove mapping.
 
 <p align="center">
-  <img src="imgs/BsiNet.png" width="800"/>
+  <img src="imgs/MMPTSN.png" width="800"/>
 </p>
 
 <p align="center">
-  <img src="imgs/results.png" width="800"/>
+  <img src="imgs/result-A.png" width="800"/>
 </p>
 
 <p align="center">
-  <img src="imgs/comparison_results.png" width="800"/>
+  <img src="imgs/result-B.png" width="800"/>
+</p>
+
+<p align="center">
+  <img src="imgs/result-C.png" width="800"/>
+</p>
+
+<p align="center">
+  <img src="imgs/result-table.png" width="800"/>
 </p>
 
 
 ## Using the code:
 
-The code is stable while using Python 3.7.0, CUDA >=11.0
+The code is stable while using Python 3.10.0, CUDA >=11.0
 
 - Clone this repository:
 ```bash
 git clone https://github.com/long123524/BsiNet-torch
-cd BsiNet-torch
+cd MMPTSN
 ```
 
 To install all the dependencies using conda or pip:
