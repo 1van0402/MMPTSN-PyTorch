@@ -1,3 +1,8 @@
+"""
+模型训练脚本。
+该脚本用于读取时间序列遥感样本，构建多模态分类模型，并完成模型训练、验证、测试及精度统计。
+"""
+
 import os
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 import data
