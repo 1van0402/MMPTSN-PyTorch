@@ -283,11 +283,13 @@ class Model(nn.Module):
         spatial_data = spatial_data.transpose(1, 2)
         sar_data = sar_data.transpose(1, 2)
 
+        # 分别提取光谱、空间纹理、SAR和物候特征
         spectral_output = self.spectral_branch(spectral_data)
         sar_output = self.sar_branch(sar_data)
         spatial_output = self.spatial_branch(spatial_data)
         phenology_output = self.phe_branch(phe_data)
 
+        # 将四个分支的特征表示作为token输入多头注意力模块进行融合
         tokens = torch.stack([spectral_output, spatial_output, sar_output, phenology_output], dim=1)
 
         attn_out, _ = self.attention(tokens, tokens, tokens)
