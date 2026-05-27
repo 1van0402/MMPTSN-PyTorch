@@ -1,3 +1,8 @@
+"""
+数据读取与样本构建脚本
+该脚本用于读取CSV格式的遥感时间序列样本，并将样本整理为模型所需的光谱、SAR、空间纹理和物候输入
+"""
+
 import numpy as np
 import pandas as pd
 import random
