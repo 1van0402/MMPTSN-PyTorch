@@ -3,6 +3,10 @@ import pandas as pd
 import random
 
 class TSLoader(object):
+    """
+    时间序列遥感样本数据加载
+    用于读取CSV样本数据，划分训练集、验证集和测试集，并将输入特征整理为光谱、空间纹理、SAR和物候四类分支数据
+    """
 
     def __init__(self, path, split, split_n, seed):
         data = np.array(pd.read_csv(path)).astype("float32")
@@ -22,6 +26,9 @@ class TSLoader(object):
             std = np.std(X, axis=(0, 1))
         return (X - mean) / (std + 1e-8), mean, std
 
+    """
+    多个数据增强操作
+    """
     def add_noise(self, X, scale=0.01):
         noise = np.random.normal(0, scale, X.shape)
         return X + noise
@@ -43,6 +50,10 @@ class TSLoader(object):
         return x_phe + noise
 
     def augment(self, X_spectral, X_spatial, X_sar, X_phe, Y):
+        """
+        对光谱、空间纹理、SAR和物候特征进行数据增强
+        """
+        
         augmented_spectral = []
         augmented_spatial = []
         augmented_sar = []
@@ -84,6 +95,11 @@ class TSLoader(object):
         return np.array(augmented_spectral), np.array(augmented_spatial), np.array(augmented_sar), np.array(augmented_phe), np.array(augmented_labels)
 
     def get_data(self):
+        """
+        按类别划分样本，并提取多分支输入特征
+        返回训练集、增强训练集、验证集和测试集所需的数据
+        """
+        
         label0 = self.data[self.data[:, 0] == 0]
         label1 = self.data[self.data[:, 0] == 1]
         label2 = self.data[self.data[:, 0] == 2]
@@ -114,6 +130,10 @@ class TSLoader(object):
         test = np.vstack((test0, test1, test2))
 
         def extract_features(data):
+            """
+            从样本数据中提取逐月光谱、SAR、空间纹理和物候特征
+            """
+            
             spectral_features = []
             vhd_features = []
             sar_features = []
