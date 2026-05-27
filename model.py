@@ -3,6 +3,11 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class ChannelAttention(nn.Module):
+    """
+    一维特征图的通道注意力模块
+    通过平均池化和最大池化生成通道权重，用于增强重要特征通道
+    """
+    
     def __init__(self, in_planes, ratio=16):
         super(ChannelAttention, self).__init__()
         self.avg_pool = nn.AdaptiveAvgPool1d(1)
@@ -22,6 +27,11 @@ class ChannelAttention(nn.Module):
         return self.sigmoid(out)
 
 class SpatialAttention(nn.Module):
+    """
+    一维特征图的空间注意力模块
+    用于学习序列维度上的重要位置权重
+    """
+    
     def __init__(self, kernel_size=7):
         super(SpatialAttention, self).__init__()
         self.conv1 = nn.Conv1d(2, 1, kernel_size, padding=kernel_size // 2, bias=False)
@@ -35,6 +45,10 @@ class SpatialAttention(nn.Module):
         return self.sigmoid(x)
 
 class CBAM(nn.Module):
+    """
+    卷积块注意力模块
+    """
+    
     def __init__(self, in_planes, ratio=16, kernel_size=7):
         super(CBAM, self).__init__()
         self.channel_attention = ChannelAttention(in_planes, ratio)
@@ -70,6 +84,10 @@ class Spatial(nn.Module):
         return self.sigmoid(attn)
 
 class CBAM1(nn.Module):
+    """
+    用于空间分支的CBAM结构
+    """
+    
     def __init__(self, in_planes):
         super(CBAM1, self).__init__()
         self.ca = ChannelAttention(in_planes)
@@ -82,6 +100,10 @@ class CBAM1(nn.Module):
 
 
 class Attention(nn.Module):
+    """
+    时间注意力池化模块
+    """
+    
     def __init__(self, hidden_dim):
         super(Attention, self).__init__()
         self.attention = nn.Sequential(
@@ -98,6 +120,12 @@ class Attention(nn.Module):
 
 
 class SpectralBranch(nn.Module):
+    """
+    光谱特征提取分支
+    该分支结合卷积、双向LSTM、CBAM注意力和时间注意力池化
+    用于提取月尺度光谱时间序列特征
+    """
+    
     def __init__(self, input_dim=12, hidden_dims=256, num_layers=2, bidirectional=True, dropout=0.5):
         super(SpectralBranch, self).__init__()
         self.tcn = nn.Conv1d(input_dim, hidden_dims, kernel_size=3, padding=1)
@@ -132,6 +160,11 @@ class SpectralBranch(nn.Module):
 
 
 class SpatialBranch(nn.Module):
+    """
+    空间纹理特征提取分支
+    该分支利用一维卷积和CBAM注意力提取空间纹理特征表征
+    """
+    
     def __init__(self, input_dim=3, hidden_dims=128, kernel_size=3, num_init_features=128, dropout=0.5):
         super(SpatialBranch, self).__init__()
 
@@ -163,6 +196,12 @@ class SpatialBranch(nn.Module):
 
 
 class SARBranch(nn.Module):
+    """
+    SAR特征提取分支
+    该分支结合卷积、双向LSTM、CBAM注意力和时间注意力池化
+    用于提取月尺度SAR时间序列特征
+    """
+    
     def __init__(self, input_dim=2, hidden_dims=128, num_layers=2, bidirectional=True, dropout=0.5):
         super(SARBranch, self).__init__()
 
@@ -198,6 +237,10 @@ class SARBranch(nn.Module):
 
 
 class phenology_branch(nn.Module):
+    """
+    物候特征提取分支
+    """
+    
     def __init__(self, input_dim=5, output_dim=128, dropout=0.5):
         super(phenology_branch, self).__init__()
         self.net = nn.Sequential(
