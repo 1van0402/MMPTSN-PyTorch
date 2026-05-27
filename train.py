@@ -15,6 +15,11 @@ from torch.utils.data import ConcatDataset, DataLoader
 
 
 def adjust_learning_rate(optimizer, init_lr, epoch, args):
+    """
+    按照余弦退火策略调整学习率
+    学习率会根据当前训练轮次和总训练轮次动态更新
+    """
+    
     cur_lr = init_lr * 0.5 * (1. + np.cos(np.pi * epoch / args.epochs))
     for param_group in optimizer.param_groups:
         if 'fix_lr' in param_group and param_group['fix_lr']:
@@ -24,6 +29,11 @@ def adjust_learning_rate(optimizer, init_lr, epoch, args):
 
 
 def train(train_loader, val_loader, model, criterion, optimizer, epoch, args):
+    """
+    执行单轮模型训练，并在验证集上进行精度评估
+    函数输出当前轮次的训练损失、训练精度、验证损失和验证精度
+    """
+    
     model.train()
     total_loss = 0
     total_correct = 0
@@ -75,6 +85,10 @@ def train(train_loader, val_loader, model, criterion, optimizer, epoch, args):
 
 
 def setup_seed(seed):
+    """
+    设置随机种子以保证实验结果具有可重复性
+    """
+    
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
     np.random.seed(seed)
@@ -197,6 +211,9 @@ if __name__ == "__main__":
 
 
     def print_metrics_table_with_model_info(acc_lis, model_info):
+        """
+        输出模型参数设置和多次实验的精度评价结果
+        """
 
         metrics_names = ["OA", "Kappa"]
         num_classes = len(acc_lis[0]) - 10
