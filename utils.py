@@ -3,6 +3,10 @@ from sklearn.metrics import (accuracy_score, confusion_matrix, cohen_kappa_score
                              recall_score, f1_score, precision_score)
 
 def calculate_metrics(y_true, y_pred):
+    """
+    计算分类精度评价指标
+    """
+  
     mat = confusion_matrix(y_true, y_pred)
 
     # Kappa、OA
