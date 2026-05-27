@@ -10,7 +10,11 @@ from model import Model
 
 
 def load_full_image_time_series_data(file_path):
-    """加载全图时间序列数据"""
+    """
+    读取全图预测所需的时间序列样本数据
+    将CSV文件中的特征重新整理为光谱特征、空间纹理特征、SAR特征和物候特征，以便输入训练好的多分支模型进行全图分类预测
+    """
+    
     df = pd.read_csv(file_path)
     geo_info = df.iloc[:, -2:].values
     data = df.iloc[:, :-7].values.astype("float32")
@@ -58,6 +62,11 @@ def load_full_image_time_series_data(file_path):
     return geo_info, spectral_data, spatial_data, sar_data, phe_data
 
 def normalize(X, mean=None, std=None):
+    """
+    对输入特征进行标准化处理
+    当未提供均值和标准差时，函数会根据输入数据自动计算
+    """
+    
     if mean is None:
         mean = np.mean(X, axis=(0, 1))
     if std is None:
@@ -65,6 +74,10 @@ def normalize(X, mean=None, std=None):
     return (X - mean) / (std + 1e-8), mean, std
 
 def classify_samples_in_batches(model, spectral_data, spatial_data, sar_data, phe_data, batch_size=1024):
+    """
+    分批对全图样本进行分类预测
+    """
+    
     model.eval()
     num_samples = spectral_data.shape[0]
     predictions = []
@@ -86,6 +99,11 @@ def classify_samples_in_batches(model, spectral_data, spatial_data, sar_data, ph
     return predictions
 
 def save_classification_as_geotiff(geo_info, classification_result, output_path, resolution=0.0001):
+    """
+    将分类结果保存为带地理坐标信息的GeoTIFF文件
+    根据样本经纬度信息将点状预测结果插值到规则网格，并设置WGS84坐标系后导出
+    """
+    
     output_dir = os.path.dirname(output_path)
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
