@@ -1,6 +1,11 @@
 import torch
 
 def predicted(test_loader, model):
+    """
+    使用训练好的模型对测试集进行预测
+    返回真实标签和预测标签，用于后续精度评价
+    """
+
     with torch.no_grad():
         model.eval()
         all_labels, all_predictions = [], []
